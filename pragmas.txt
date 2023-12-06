@@ -1,0 +1,10 @@
+
+Why you shouldn't allocate stuff on the stack
+=============================================
+
+Stack allocations should not be accessed after the function returns.
+If you want permanent allocation use heap or .data / .bss
+
+otherwise there is no reason why you shouldn't allocate char arr[1000000]
+(beware that stack will not grow like heap does (mmap). It will just cause
+segfault)

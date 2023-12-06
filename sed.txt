@@ -1,0 +1,14 @@
+regex grouping - https://stackoverflow.com/questions/6258643/sed-wildcard-substitution
+
+1. group wildcard using parentheses (must be escaped)
+2. access wildcard value using \NUMBER
+
+marko -> komar
+echo marko | sed 's/mar\(.*\)/\1mar/'
+
+zebra -> breza
+echo zebra | sed 's/\(.\)\(.\)\(.\)\(.\)\(.\)/\3\4\2\1\5/'
+
+a{n} -> n repetitions of a
+a{n,} -> n or more repetitions of a
+a{n,m} -> n or more, but no more than m repetitions of a

@@ -1,0 +1,14 @@
+docker system prune
+docker container prune
+
+--- Security ---
+
+-- docker group --
+
+Adding user to 'docker' group grants full root permissions to that user.
+
+POC:
+	user cannot do 'cat /proc/kallsyms' from host
+
+	user can run 'docker run --privileged ...'
+	inside that docker user can 'cat /proc/kallsyms' and get full output

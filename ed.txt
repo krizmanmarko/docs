@@ -1,0 +1,93 @@
+
+ed metacharacters (check out adv.ed.pdf)
+========================================
+https://wolfram.schneider.org/bsd/7thEdManVol2/adv.ed/adv.ed.pdf
+
+
+1,$p
+/pattern/
+i, a, c
+...
+
+command/matching/replacing/flags
+
+pattern matching:
+	.
+	\
+	$
+	^
+	*
+	[] <- inside of brackets only ^ and ] have special meaning if they are the
+	      first character (possible: [^][] -> every character that isnt ] or [)
+	\(\) <- grouping
+	[:alnum:] Alphanumeric characters 
+	[:alpha:] Alphabetic characters 
+	[:blank:] Space and tab characters 
+	[:cntrl:] Control characters 
+	[:digit:] Numeric characters 
+	[:graph:] Printable and visible (non-space) characters 
+	[:lower:] Lowercase characters 
+	[:print:] Printable characters (includes whitespace) 
+	[:punct:] Punctuation characters 
+	[:space:] Whitespace characters 
+	[:upper:] Uppercase characters 
+	[:xdigit:] Hexadecimal digits docstore.mik.ua/orelly/unix3/vi/ch06_03.htm
+
+pattern replacing:
+	& -> s/.*/& The end./ (print entire pattern in replace)
+	  -> s/3 + 5/(&)/
+	\1, \2... -> replaced with first grouped, second group...
+	\u, \l -> makes next character uppercase/lowercase
+	\U, \L -> makes following characters upprecase/lowercase (until \e, \E)
+	\e, \E -> signifies end of toupper / tolower
+
+
+pattern flags:
+	p -> print (useful to verify changes)
+	d -> delete
+	nu -> print line number next to each pattern
+
+pattern commands:
+	s -> substitute
+	g -> print all lines containing pattern
+	v -> print all lines that do not contain pattern (g!)
+	g! -> same as v
+
+range:
+(can be used while searching: /pattern/range,
+or while substituting: ranges/.../.../...)
+	.
+	$
+	/.../
+	?...?
+	----- -> up 5 times
+	+++ -> down 3 times
+	anythning+/-n -> any range operator +/- n lines
+	
+Extras:
+	// -> last search
+	?? -> last search (in reverse direction)
+	example: //s//& and &/g
+	example: g/pattern/s//replace/gp
+
+
+:g/pattern/inew ending
+
+
+if you want to deal with newlines just type "\
+" literal (backslash enter and not \n)
+
+EX mode
+:# -> print current line with number
+:= -> print number of lines in file
+:t copy
+:co copy
+:d delete
+:m move
+
+:/pattern1/,/pattern2/d (delete from pattern1 to pattern2)
+
+:command1 | command2 | command 3
+
+redirection also works >> >
+:340,$w >>newfile

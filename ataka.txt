@@ -1,0 +1,23 @@
+--- to create new exploit
+atk exploit template python|ubuntu
+
+--- only once
+atk exploit create ...
+
+--- on exploit change (author can be anything)
+atk exploit upload ...
+
+--- activate exploit
+atk exploit ls
+atk exploit activate ...
+
+
+--- test on NOP machines (exploit_id == "_")
+atk exploit runlocal ...
+
+--- logs
+atk exploit logs
+
+
+Cannot stop containers permission denied (ubuntu 22.04 server)
+sudo aa-remove-unknown (disables apparmor)

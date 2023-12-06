@@ -1,0 +1,9 @@
+https://stackoverflow.com/questions/36639607/how-exactly-do-kernel-virtual-addresses-get-translated-to-physical-ram/36640733#36640733
+My understanding is that we only (page) fault in kernel-space for the vmalloc & exception fixups (like copy_to|from_user). Any other fault in kernel-mode is a bug and an Oops occurs.
+
+arch/riscv/include/asm/page.h: unmodified: line 30 of 191 [15%]
+/*
+ * PAGE_OFFSET -- the first address of the first page of memory.
+ * When not using MMU this corresponds to the first free page in
+ * physical memory (aligned on a page boundary).
+ */

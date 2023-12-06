@@ -1,0 +1,215 @@
+Traditional vi/ex advanced tips and tricks
+check out https://ex-vi.sourceforce.net/viin/paper.html
+https://docstore.mik.ua/orelly/unix3/vi/ch09_05.htm
+also check out :help vi_diff in vim.basic
+
+Navigation
+==========
+
+^E, ^Y -> expose a line at the top / bottom (no cursor movement)
+^F, ^B -> like pgup, pgdown but leaves at least 1 line from previous page
+H, M, L -> position cursor to top, mid, bottom
+5H / 3L -> goto 5th line on screen / goto 3rd line from bottom up on screen
+n| -> goto nth column
+'' -> like ctrl-o in vim
+
+z -> place current line to top of the screen
+z. -> place current line to center of the screen
+z- -> place current line to bottom of the screen
+
+--- This is for functions (if using lisp option it adapts to those functions)
+[[, ]] -> goto next / previous line that matches '^{' (useful for c functions)
+y]] -> y/^} (copies whole function body - special behaviour if used with operators)
+
+
+Editing
+=======
+
+^U -> like alt+shift+S (from insert mode)
+^D, ^T -> change indent from insert mode
+y/pattern/-n <- to copy everything up to line containing pattern - n lines
+y/pattern/+n <- same but line containing pattern + n lines
+
+
+Macros
+======
+
+^V is the escape character (try multiple if it doesn't work in vi mode)
+
+map sequence better_sequence <- this applies to normal mode
+unmap sequence
+
+if sequence == '#[0-9]' -> this maps to F1-F9
+
+map! sequence better_sequence <- this applies to insert mode
+map! ^T ^Vb/b/b/b/ <- map tab to 4 spaces
+
+
+
+Abbreviations
+=============
+like insert macros but only recognized if it is whole word (somethingsequence will not trigger it, sequence will)
+
+ab sequence better_sequence
+
+
+Recovering data
+===============
+
+vi -r -> prints most recovery files
+
+"2p -> pastes buffer before last buffer change (older buffer)
+"1p -> wrong buffer? -> u. -> pastes next buffer (only last 9 buffers)
+
+possible buffers: "[1-9a-z]
+1-9 The last nine deletions, from most to least recent.
+a-z Named buffers for you to use as needed. Uppercase letters append to the buffer.
+
+:pu a -> paste buffer a
+
+unnamed buffers persist when :e is executed
+unnamed buffers -> "1, "2...
+named buffers -> "a, "b...
+
+uppercase letter buffers are used as accumulative buffer
+store abcdef in buffer a (by using "ayw)
+append ghijkl to buffer a (by using "Ayw)
+
+nvi: display buffers
+
+Marks
+=====
+
+` used for exact column and line
+' used for exact line
+
+ma <- create mark
+'a, `a <- goto mark a
+
+', ` are special previous context mark (like ctrl-o in vim)
+
+
+regex pattern matching (all special characters - in magic mode)
+===============================================================
+
+^ - beginning of line
+$ - end of line
+. - any character
+\< - beginning of word
+\> - end of word
+[str]
+[^str]
+[x-y]
+*
+
+Weird modes
+===========
+open mode -> one line vi mode
+ex mode -> (Q from normal mode)
+
+
+ed metacharacters (check out adv.ed.pdf)
+========================================
+https://wolfram.schneider.org/bsd/7thEdManVol2/adv.ed/adv.ed.pdf
+
+
+command/matching/replacing/flags
+
+pattern matching:
+	.
+	\
+	$
+	^
+	*
+	[] <- inside of brackets only ^ and ] have special meaning if they are the
+	      first character (possible: [^][] -> every character that isnt ] or [)
+	\(\) <- grouping
+
+pattern replacing:
+	& -> s/.*/& The end./
+	  -> s/3 + 5/(&)/
+	\1, \2... -> replaced with first grouped, second group...
+
+
+pattern flags:
+	p -> print (useful to verify changes)
+	d -> delete
+
+pattern commands:
+	s -> substitute
+	g -> print all lines containing pattern
+	v -> print all lines that do not contain pattern
+
+range:
+(can be used while searching: /pattern/range,
+or while substituting: ranges/.../.../...)
+	.
+	$
+	/.../
+	?...?
+	----- -> up 5 times
+	+++ -> down 3 times
+	anythning+/-n -> any range operator +/- n lines
+	
+Extras:
+	// -> last search
+	?? -> last search (in reverse direction)
+	example: //s//& and &/g
+	example: g/pattern/s//replace/gp
+
+:r !echo % -> prints current filename (actually argument given to vi)
+check out (nvim) :help cmdline-special
+
+
+:g/pattern/inew ending
+
+
+if you want to deal with newlines just type "\
+" literal (backslash enter and not \n)
+
+nvi: enter character by its hex value: ^X41 -> A
+
+
+Working with multiple files
+===========================
+
+vi f1 f2 f3 ...
+
+:args -> prints arguments ([f1] f2 f3 ...])
+:n -> goes to next file
+:prev -> goes to previous
+:rew -> goes to file f1 (first in arg)
+
+% -> current filename
+# -> previous filename (:e # -> goes to previous file)
+
+vi clones
+=========
+
+busybox vi:
+	lacks !ls directly to current file at .
+	lacks :'a,'b!python3
+	this still works but is pretty dumb :!ls >>%
+	lacks i_C-w (delete word in insert mode)
+	lacks ctags support
+	has weird order for changing 2 words (2cw instead of c2w)
+	sumniki ne delajo dobr
+	no buffer execution
+
+traditional vi (https://github.com/n-t-roff/heirloom-ex-vi):
+	tags do not go backwards (C-] works, but C-t doesn't)
+
+nvi:
+	previous command editing (just doesn't work / segfaults)
+
+
+vim / nvim:
+	C-n for autocomplete
+	i_C-r for pasting
+	* to highlight current word
+	command history works
+	syntax highlighting
+	visual mode (easy commenting, replacing a word)
+	- since it is so advanced, i do not get to use gnu utils that much
+	has i, a (da{)
+	ANNOYING: making line after comment line also turns it into a comment

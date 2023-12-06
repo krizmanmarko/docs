@@ -1,0 +1,2 @@
+# to change sudo password timeout
+Defaults	env_reset,timestamp_timeout=num in minutes

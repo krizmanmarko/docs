@@ -1,0 +1,112 @@
+
+=== GNU as ===
+
+.incbin "path/to/binary_file"
+
+.section name, "flags"
+.section .init, "ax"
+
+flags:
+	a - allocatable
+	x - executable
+	w - writeable
+
+sources:
+[1] https://sourceware.org/binutils/docs/as/Section.html
+
+=== linker script (*.ld) ===
+
+--- linking ---
+
+ld -T linker.ld *.o -o binary -Map=/tmp/generated.map
+
+
+--- C code to access linker defined symbols (extern) ---
+
+extern type symbol_name_start;
+extern type symbol_name_end;
+size_t size = &symbol_name_end - &symbol_name_start;
+
+or
+
+extern type symbol_name_start[];
+extern type symbol_name_end[];
+size_t size = symbol_name_end - symbol_name_start;
+
+or
+
+extern type *symbol_name_start;
+extern type *symbol_name_end;
+size_t size = &symbol_name_end - &symbol_name_start;
+
+// check out why char * is different to char[]
+// maybe you will figure it out
+https://wiki.osdev.org/Using_Linker_Script_Values
+
+--- syntax ---
+
+/* this is a comment */
+
+ENTRY(symbol)
+
+MEMORY
+{
+	name [(attr)]: ORIGIN = origin, LENGTH = length
+	/*
+	 * name: user defined string
+	 * attr:
+	 *	R - read-only sections
+	 *	W - read and write sections
+	 *	X - executable sections
+	 *	A - allocated sections
+	 *	I - initialized sections
+	 *	L - initialized sections (same as 'I')
+	 *	! - invert attr
+	 */
+
+	/* these are equal */
+	FLASH(RX): ORIGIN =0x80000000, LENGTH =1024K
+	FLASH(RX): ORIGIN =0x80000000, LENGTH =1024 * 1024
+}
+
+SECTIONS
+{
+	/* . - just a variable (location counter) */
+	. = symbol_1;			/* set location pointer */
+	addr = ABSOLUTE(.);		/* non-relocatable address */
+	aligned_addr = ALIGN(k);	/* k is a power of 2 */
+	size = SIZEOF(.name);		/* in bytes */
+
+	.name:
+	{
+		filename(.section_1 .section2)
+		*(.text .text.*)	/* from all files (first *) add section .text and .text.* */
+	}> virtual_memory_address AT> load_memory_address
+	/* vma == where code will be in VAS */
+	/* lma == where code is in memory */
+
+	.text:
+	{
+		*(.text)	/* .text from all files (* is filename) */
+		.rodata		/* only specific .rodata */
+	}> FLASH AT> FLASH
+	}> FLASH /* same as above (vma == lma) */
+}
+
+sources:
+[1] https://www.youtube.com/watch?v=B7oKdUvRhQQ
+[2] https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_node/ld_14.html
+
+=== Preprocessor ===
+
+'##' is used to concatenate (https://en.wikipedia.org/wiki/C_preprocessor#Token_concatenation)
+
+but '##__VA_ARGS__' is something else
+if __VA_ARGS__ is empty than preceeding comma is omitted
+#define myprintf(fmt, ...) printf(fmt, ##__VA_ARGS__)	// is not portable
+#define myprintf(...) printf(__VA_ARGS__)		// is better but situational
+
+#something -> "something"
+
+=== objdump ===
+print available targets: objdump -i

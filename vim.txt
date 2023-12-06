@@ -1,0 +1,20 @@
+^O -> represents CTRL-O
+:help vi_diff
+
+": -> contains last command-line
+"% -> contains file name
+". -> contains last inserted text
+
+(insert)^O -> execute one normal command and return to inster mode
+
+^D/^T -> indentation
+^R{regname} -> "{regname}p
+
+/^p -> /previous pattern
+/^n -> /next pattern
+
+
+/...^f -> goto q/ mode
+:...^f -> goto q: mode
+q:
+q/

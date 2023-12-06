@@ -1,0 +1,8 @@
+sticky bit
+chmod 1777 /tmp
+any user can write to the /tmp and /var/tmp directories, but cannot remove another user's files from them.
+
+setuid bit
+chmod u+s /bin/su
+chmod g+s /bin/su
+chmod 4777 /bin/su

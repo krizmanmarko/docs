@@ -1,0 +1,54 @@
+--: signals the end of options and disables further option processing. Any args
+    after it are treated as filenames and arguments. An arg of - is equal to --
+
+$*: "$1c$2c..." where c is first character in IFS
+$@: "$1" "$2" ...
+$#: number of positional parameters in decimal (length($@))
+$?: exit code
+$-: print current set of options (search for "option-name" in man bash)
+$$: pid of current shell (even if invoked in subshell)
+$!: pid of last backgrounded job
+$0: name of script
+$_: arguments of previous command / at startup absolute path where bash started
+
+!$: last argument of previous command
+!^: first argument of previous command
+
+$RANDOM: randint in [0, 32767]
+
+=~: string =~ regex matching
+
+
+for i in {0..9} ; do list ; done
+for (( i=0 ; i=10 ; i=i+1 )) ; do list ; done
+
+# selection happens until a break command is executed
+# line read is stored in $REPLY
+select action in a b c ; do list ; done
+
+##################
+stopped at arrays
+
+
+Job control
+===========
+
+ - suspend now
+ - suspend when read() is called (not working in linux)
+%n -> job n
+%pattern -> job containing '^pattern' in cmdline
+%?pattern -> job containing 'pattern' in cmdline
+%% %+ % -> current job
+%- -> previous job
+
+fg %% -> run job %%
+'%1 &' 'bg %1' -> run job %1 in background
+
+--- Extras ---
+bash setuid (bash -p)
+
+ctrl-s - ctrl-q
+
+close stdin: 0<&-
+
+cut off extension: ${file%.txt}

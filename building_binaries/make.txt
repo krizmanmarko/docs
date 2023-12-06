@@ -1,0 +1,47 @@
+# this is a comment
+
+BINARY=a.out
+CODEDIRS=. lib
+INCDIRS=. ./include/
+
+CC=gcc
+CFLAGS=-Wall -Wextra -pedantic -g $(INCLUDES) $(LIBS) -O2 $(DEPFLAGS)
+
+# force gcc to create dependency files (*.d) (for includes *.h)
+DEPFLAGS=-MP -MD
+CFLAGS=$(DEPFLAGS)
+DEPFILES= list of all .d files
+-include $(DEPFILES)
+
+CFILES=x.c y.c
+OBJECTS=x.o y.o
+
+.PHONY: all clean
+
+target: dependencies
+	commands
+	@silent command (executes but doesn't print cmdline)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $^
+
+Automatic variables (check out source [1]):
+	$@: target
+	$^: dependencies
+	$<: left-most dependency
+
+
+$(info this string is echoed without info)
+
+$(foreach VARNAME,LIST,what_to_do)
+$(foreach VARNAME,$(INCDIRS),-I$(VARNAME))
+
+$(wildcard expression_with_asterisk)
+$(wildcard dirname/*.c) -> dirname/a.c dirname/b.c
+
+$(patsubst replace_this,with_this,in_this)
+OBJECTS=$(patsubst %.c,%.o,$(CFILES))
+
+
+sources:
+[1] https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html

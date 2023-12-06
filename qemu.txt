@@ -1,0 +1,10 @@
+mount qcow2 img
+
+modprobe nbd max_part=8
+qemu-nbd --connect=/dev/nbd0 /path/to/qcow2
+lsblk shows magic
+qemu-nbd --disconnect=/dev/nbd0
+
+
+disable interrupts while debugging (https://qemu-project.gitlab.io/qemu/system/gdb.html)
+maintenance packet qqemu.sstepbits

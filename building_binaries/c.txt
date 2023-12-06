@@ -1,0 +1,13 @@
+struct a a = {
+	[0] = "hello",
+	.b = 0
+};
+
+--- asm
+
+https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html#Extended-Asm
+https://gcc.gnu.org/onlinedocs/gcc/Constraints.html#Constraints
+
+asm ("fsinx %[angle],%[output]"
+	: [output] "=f" (result)
+	: [angle] "f" (angle));

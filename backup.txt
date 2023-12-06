@@ -1,0 +1,8 @@
+tar
+    c - create a new backup archive.
+    v - verbose mode, tar will print what it's doing to the screen.
+    p - preserves the permissions of the files put in the archive for restoration later.
+    z - compress the backup file with 'gzip' to make it smaller.
+    f <filename> - specifies where to store the backup, backup. tar.
+
+tar cvpzf /tmp/backup.tar.gz /path/to/dir
