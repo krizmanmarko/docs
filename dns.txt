@@ -1,0 +1,135 @@
+Ingress filtering - external traffic reaching internal
+RRset - set of all TYPE (A, AAAA, ...) records on this ns
+RPZ - response policy zone
+Anycast - single IP multiple machines (check out routing/network.txt for more)
+label - domain name (wiki.arnes.si)
+
+in-addr.arpa -> is a label but with IP
+1.0.0.127.in-addr.arpa.		IN	PTR	hello.com
+
+DNS usually runs over UDP unless packets are too big
+
+Query Types
+===========
+1. Recursive query
+You either get the 'IP' or 'not found' no matter the cost
+
+2. Iterative query
+You may be redirected to other ns
+you must repeat your query with provided ns
+
+
+A: domain name -> IPv4
+AAAA: domain name -> IPv6
+PTR: IPv4 -> domain name
+AXFR: transfer whole zone file (privileged only)
+
+dnssec specific
+DNSKEY: public dnssec key (public ZSK or KSK)
+RRSIG: signature of RRset signed with private ZSK
+RRSIG: signature of ZSK signed with private KSK
+DS: delegation signer (hash of child zone public KSK)
+
+
+Return codes
+============
+
+0 = NOERR, no error
+1 = FORMERR, format error (unable to understand the query)
+2 = SERVFAIL, name server problem
+3 = NXDOMAIN, domain name does not exist
+4 = NOTIMPL, not implemented
+5 = REFUSED (e.g., refused zone transfer requests)
+
+
+DNSSEC
+======
+
+https://www.cloudflare.com/dns/dnssec/how-dnssec-works/
+
+ZSK - zone signing key
+	signs ANY RRset (adds RRSIG for any RRset)
+KSK - key signing key
+	signs DNSKEY RRset (adds RRSIG for DNSKEY)
+
+1. Request the desired RRset, which also returns the corresponding RRSIG record.
+2. Request the DNSKEY records containing the public ZSK and public KSK, which also returns the RRSIG for the DNSKEY RRset.
+3. Verify the RRSIG of the requested RRset with the public ZSK.
+4. Verify the RRSIG of the DNSKEY RRset with the public KSK.
+
+
+Example
+-------
+
+127.0.0.1
+
+A RRset = list of IPv4 addresses
+A.RRSIG (created using ZSK)
+
+AAAA RRset = list of IPv6 addresses
+AAAA.RRSIG (created using ZSK)
+
+DNSKEY RRset = {DNSKEY zsk, DNSKEY ksk}
+DNSKEY.RRSIG (created using KSK)
+
+1. request A RRset
+	received A RRset
+	received A.RRSIG
+	You would like to check if signature is correct
+	2. request DNSKEY RRset
+		received public ZSK
+		received public KSK
+		received DNSKEY.RRSIG
+	using public KSK you can check the signature of DNSKEY RRset
+using ZSK you can check the signature of A RRset
+
+DS explanation
+parent zone has a DS record --> DS hash(child's public KSK)
+
+
+QNAME minimization (higher anonimity)
+=====================================
+fully qualified name (name that unambigiously represents something)
+in dns context this is the domain name
+
+QNAME minimization is used to share the smallest subset of the domain name
+with the authoratitative server
+
+example
+-------
+
+visiting wiki.arnes.si
+
+you could
+1. request wiki.arnes.si on .
+2. request wiki.arnes.si on si.
+3. request wiki.arnes.si on arnes.si.
+now you have the IP address
+
+but you could minimize QNAME (wiki.arnes.si)
+1. request si on .
+2. request arnes.si on si.
+3. request wiki.arnes.si on arnes.si.
+now you have the IP address
+
+The difference is that root ns (.) only knows you are searching for .si domain
+and not the whole QNAME wiki.arnes.si
+
+
+Response Policy Zones (RPZ)
+===========================
+basically firewall na DNS levelu
+
+triggers:
+	QNAME
+	Client IP Address
+	Response IP Address
+	NSDNAME
+	NSIP
+
+possible actions:
+	NXDOMAIN
+	NODATA
+	PASSTHRU
+	DROP
+	TCP-Only

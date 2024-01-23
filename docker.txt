@@ -12,3 +12,9 @@ POC:
 
 	user can run 'docker run --privileged ...'
 	inside that docker user can 'cat /proc/kallsyms' and get full output
+--- save image
+docker save -o /path/to/file.tar image
+
+--- import image
+docker load -i /path/to/file.tar
+

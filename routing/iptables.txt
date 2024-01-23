@@ -1,0 +1,83 @@
+https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html#TRAVERSINGOFTABLES
+https://www.frozentux.net/iptables-tutorial/images/tables_traverse.jpg
+
+========
+iptables
+========
+
+--- available tables
+	a) mangle (TOS, TTL, MARK, SECMARK, CONNSECMARK)
+	b) nat (DNAT, SNAT, MASQUERADE, REDIRECT)
+	c) raw (NOTRACK)
+	d) filter (DROP, ACCEPT)
+
+--- available targets
+	a) TOS - Type of Service (usually ignored)
+	b) TTL - Time to Live
+	c) MARK (special mark for following iproute resolution)
+	d) SECMARK (for SELinux)
+	e) CONNSECMARK (for SELinux)
+	f) DNAT - Destination NAT
+	g) SNAT - Source NAT
+	h) MASQUERADE (SNAT for dynamic DHCP)
+	j) REDIRECT (change port)
+	k) NOTRACK
+	l) DROP
+	m) ACCEPT
+	n) RETURN (check man iptables)
+
+--- available states
+	a) NEW
+	b) ESTABLISHED
+	c) RELATED
+	d) INVALID
+	e) UNTRACKED
+
+
+Traversing chains and tables
+============================
+
+step. (chain, table) comment
+
+a) INPUT
+1.  (__________, ______) on the wire
+2.  (__________, ______) comes in on the interface
+3.  (PREROUTING, raw   )
+4.  (__________, ______) state machine connection tracking
+5.  (PREROUTING, mangle)
+6.  (PREROUTING, nat   ) for DNAT
+7.  (__________, ______) routing decision [*localhost|forward]
+8.  (INPUT     , mangle)
+9.  (INPUT     , filter) filtering for all packets destined to localhost
+10. (__________, ______) local application receives the packet
+
+
+b) OUTPUT
+1.  (___________, ______) local application sends the packet
+2.  (___________, ______) routing decision (send to which interface)
+3.  (OUTPUT     , raw   )
+4.  (___________, ______) state machine connection tracking
+5.  (OUTPUT     , mangle)
+6.  (OUTPUT     , nat   ) applied under special circumstances
+7.  (___________, ______) routing decision, mangle/nat may have changed how it is routed
+8.  (OUTPUT     , filter) filter outgoing packets
+9.  (POSTROUTING, mangle)
+10. (POSTROUTING, nat   ) for SNAT
+11. (___________, ______) packet goes out on the interface
+12. (___________, ______) on the wire
+
+
+c) FORWARD
+1.  (___________, ______) on the wire
+2.  (___________, ______) comes in on the interface
+3.  (PREROUTING , raw   )
+4.  (___________, ______) state machine connection tracking
+5.  (PREROUTING , mangle)
+6.  (PREROUTING , nat   ) for DNAT
+7.  (___________, ______) routing decision [localhost|*forward]
+8.  (FORWARD    , mangle)
+9.  (FORWARD    , filter) filter outgoing packets
+10. (POSTROUTING, mangle)
+11. (POSTROUTING, nat   ) for SNAT
+12. (___________, ______) packet goes out on the interface
+13. (___________, ______) on the wire

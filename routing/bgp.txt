@@ -1,0 +1,35 @@
+BGP - Border gateway protocol
+
+autonomous system (AS) prerequisites:
+	- find the best route
+	- discover changes in network
+
+peer
+is a device on the border of autonomous system
+responsible for constructing network graph
+
+
+keep-alive is the timeout for checking availability of other peers
+
+external BGP (eBGP)
+internal BGP (iBGP)
+
+BGP attributes
+==============
+
+weight
+local preference: exit path for AS
+???originate (1 bit value): did this router create this table entry? - if true use those as well
+AS path length
+
+RPKI - resource public key infrastructure
+ROA - route origin authorization
+	this is just a signed record telling if this BGP peer has the rights
+	to change BGP routing tables
+
+BGP Anycast
+===========
+
+machines are assigned the same IP
+this way all routers think this is just one address (/ machine)
+routers can do their magic without modifications

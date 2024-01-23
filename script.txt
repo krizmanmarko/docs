@@ -1,0 +1,3 @@
+script -t=/path/to/timing_file /path/to/typescript
+
+scriptreplay /path/to/timing/file /path/to/typescript

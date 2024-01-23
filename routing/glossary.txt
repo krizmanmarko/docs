@@ -1,0 +1,7 @@
+Anycast
+=======
+
+single IP multiple machines
+
+machines are assigned static ip
+now routers see all of these machines as the same thing

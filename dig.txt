@@ -1,0 +1,64 @@
+dig @name-server name type
+dig -x IP
+
+@name-server: name server address
+type: ANY, A, AAAA, ...
+name: domain name to be looked up
+
+query options:
+	+dnssec: for RRSIG, NSEC, NSEC3
+	+short +multiline
+	+all (but not really all, wtf??)
+	+tls, +https -> DoT, DoH
+	+trace (get full resolution trace)
+
+
+DIG response header
+===================
+
+Flags:
+AA = Authoritative Answer
+TC = Truncation
+RD = Recursion Desired (set in a query and copied into the response if recursion is supported)
+RA = Recursion Available (if set, denotes recursive query support is available)
+AD = Authenticated Data (for DNSSEC only; indicates that the data was authenticated)
+CD = Checking Disabled (DNSSEC only; disables checking at the receiving server)
+
+Response code:
+0 = NOERR, no error
+1 = FORMERR, format error (unable to understand the query)
+2 = SERVFAIL, name server problem
+3 = NXDOMAIN, domain name does not exist
+4 = NOTIMPL, not implemented
+5 = REFUSED (e.g., refused zone transfer requests)
+
+
+traversing root of trust records
+================================
+
+dig DS register.si +dnssec +multi
+register.si.		1652 IN	DS 60335 8 2 (
+				DD83C4ADE8CA700254B859FCD81A39F3B9BD490EC8DB
+				5B5227C72FB66855768A )
+register.si.		1652 IN	RRSIG DS 8 2 7200 (
+				20231216221644 20231203195424 44334 si.
+				Uao3PV59b7GWIptwD6RcziGKP8Utw0spKBx4RK/ox6Vb
+				cctLfwZTpekG2959dMPDRSTnPZjdDrmJF+dEXKrIGxEH
+				umrcuSSiOBZ5CEkLUUcekVwyN8359ARCC4PaFTOFHKSV
+				H6JXcJEab2H44iJKiNpWLMOa10Vsq41Qo/0OREIZ4cuf
+				vqHdAghIAC7hzpkOGlmExSoZgJ3qmecJXNZMQNS0aWX3
+				eQDazEaMyzBb0N6ZYrdyVydkOUXRG/p+gUqLymqpwTP0
+				543spb4nYLUwCMCzdAFaMOgPd37XBLP914YiJ1UJZjgK
+				TyWVg3F1LISy1afVv2A/olBnyKFi6eHAtg== )
+
+dig dnskey si +dnssec +multi
+si.			3560 IN	DNSKEY 256 3 8 (
+				AwEAAdY6hZUFPXbOFiF9u/ElOO5Z84BUl6/x6ce2tGM0
+				h82dSajlS7S8oX/1MTBJx5zX7dXYdtOPpGjucZ50FWtj
+				+Ho580xbD3ofarNfbPlgC7LO/6KjvMHAq1ozhgH5XQfw
+				K7cvGOxyegZPIqRcDf1vUyHtkuuwKQDT8o1ZkUdP002F
+				qVGT73zUsGbMgbOHpt66woUGGx4gUiJIaVHpDuw0+ISu
+				jbKoR6tiXhm/bVkPM4zRLOux1dlyYdL+IJNNRxPrU9mF
+				UaGUJDb+bJ1twxKgM9bBqpo38TE8UAd3m5cPn4CSMjB9
+				vhb80M65vcegf6+Hr0Twoin5TT50hQu/iwaGXtM=
+				) ; ZSK; alg = RSASHA256 ; key id = 44334
