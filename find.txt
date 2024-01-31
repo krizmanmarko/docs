@@ -1,1 +1,5 @@
 find -perm -u=s		# check for setuid bit
+
+find . -exec du -sh {} \;
+	if using \; -> for each file run a command (many execs)
+	if using \+ -> like xargs (one exec)

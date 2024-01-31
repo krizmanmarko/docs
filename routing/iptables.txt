@@ -1,39 +1,10 @@
 https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html#TRAVERSINGOFTABLES
 https://www.frozentux.net/iptables-tutorial/images/tables_traverse.jpg
 
-========
-iptables
-========
 
---- available tables
-	a) mangle (TOS, TTL, MARK, SECMARK, CONNSECMARK)
-	b) nat (DNAT, SNAT, MASQUERADE, REDIRECT)
-	c) raw (NOTRACK)
-	d) filter (DROP, ACCEPT)
+iptables [-t table] command [match] [target/jump]
 
---- available targets
-	a) TOS - Type of Service (usually ignored)
-	b) TTL - Time to Live
-	c) MARK (special mark for following iproute resolution)
-	d) SECMARK (for SELinux)
-	e) CONNSECMARK (for SELinux)
-	f) DNAT - Destination NAT
-	g) SNAT - Source NAT
-	h) MASQUERADE (SNAT for dynamic DHCP)
-	j) REDIRECT (change port)
-	k) NOTRACK
-	l) DROP
-	m) ACCEPT
-	n) RETURN (check man iptables)
-
---- available states
-	a) NEW
-	b) ESTABLISHED
-	c) RELATED
-	d) INVALID
-	e) UNTRACKED
-
-
+============================
 Traversing chains and tables
 ============================
 
@@ -62,7 +33,7 @@ b) OUTPUT
 7.  (___________, ______) routing decision, mangle/nat may have changed how it is routed
 8.  (OUTPUT     , filter) filter outgoing packets
 9.  (POSTROUTING, mangle)
-10. (POSTROUTING, nat   ) for SNAT
+10. (POSTROUTING, nat   ) for SNAT, MASQUERADE
 11. (___________, ______) packet goes out on the interface
 12. (___________, ______) on the wire
 
@@ -78,6 +49,183 @@ c) FORWARD
 8.  (FORWARD    , mangle)
 9.  (FORWARD    , filter) filter outgoing packets
 10. (POSTROUTING, mangle)
-11. (POSTROUTING, nat   ) for SNAT
+11. (POSTROUTING, nat   ) for SNAT, MASQUERADE
 12. (___________, ______) packet goes out on the interface
 13. (___________, ______) on the wire
+
+
+===========
+Other stuff
+===========
+
+table
+=====
+
+nat, filter, mangle, raw
+
+
+command
+=======
+
+-A|--append chain [-v|--verbose, -c|--set-counters]
+-D|--delete chain [-v|--verbose]
+-R|--replace chain num [-v|--verbose, -c|--set-counters]
+-I|--insert chain num [-v|--verbose, -c|--set-counters]
+-L|--list [chain] [-v|--verbose, -x|--exact, -n|--numeric, --line-numbers]
+-F|--flush [chain]
+-Z|--zero [chain]
+-N|--new-chain custom
+-X|--delete-chain chain
+-P|--policy chain target
+-E|--rename-chain chain custom
+
+num -> number of chain
+
+
+match
+=====
+
+! -> use this to invert match
+
+
+1. generic matches
+------------------
+
+-p|--protocol proto
+-s|--src|--source ip[/mask]
+-d|--dst|--destination ip[/mask]
+-i|--in-interface ifname
+-o|--out-interface ifname
+-f|--fragment
+
+proto -> tcp | udp | icmp | ALL (match tcp, udp and icmp) | integer
+ifname -> eth0 | wlan0 | ...
+
+
+2. TCP matches
+--------------
+
+--sport|--source-port num
+--dport|--destination-port num
+--tcp-flags flags_to_check flags_check_if_set
+--tcp-option ???
+
+flags -> SYN | ACK | FIN | RST | URG | PSH | ALL | NONE
+
+
+3. UDP matches
+--------------
+
+--sport|--source-port num
+--dport|--destination-port num
+
+
+4. ICMP matches
+---------------
+
+--icmp-type type
+
+
+5. Extras
+---------
+
+-m iprange --src-range ip-ip
+-m iprange --dst-range ip-ip
+--length 1400:1500
+--ttl-eq
+--ttl-gt
+--ttl-lt
+
+
+target/jump
+===========
+
+Jump
+----
+goto chain within the same table (basically call chain)
+
+Targets (what to do with the packet)
+------------------------------------
+ACCEPT (once this target is reached no further processing is done)
+DROP (once this target is reached no further processing is done)
+REJECT
+	--reject-with reason
+
+DNAT (destination ip rewrite)
+	--to-destination ip[:port]
+SNAT (source ip rewrite)
+	--to-source ip[:port]
+LOG
+	--log-level dmesg_log_level
+	--log-prefix "string"
+	--log-tcp-sequence
+	--log-tcp-options
+	--log-ip-options
+MARK
+	--set-mark <id>
+
+MASQUERADE (dynamic SNAT)
+	--to-ports port
+REDIRECT
+	--to-ports port
+RETURN (just ends subchain execution, or use default policy if main chain (INPUT...))
+
+reason -> icmp-net-unreachable | icmp-host-unreachable | icmp-port-unreachable | icmp-proto-unreachable | icmp-net-prohibited | icmp-host-prohibited
+ip -> XXX.XXX.XXX.XXX | ip-ip
+port -> number | port-port
+  > port can only be specified if --protocol udp|tcp
+
+--- other targets
+CLASSIFY
+CLUSTERIP
+CONNMARK
+CONNSECMARK
+MIRROR
+NETMAP
+NFQUEUE
+NOTRACK
+DSCP
+ECN
+ULOG (hardcore log)
+QUEUE
+SAME (different SNAT)
+SECMARK
+TCPMSS
+TOS
+TTL
+
+
+--- available tables
+	a) mangle (TOS, TTL, MARK, SECMARK, CONNSECMARK)
+	b) nat (DNAT, SNAT, MASQUERADE, REDIRECT)
+	c) raw (NOTRACK)
+	d) filter (DROP, LOG, ACCEPT, REJECT)
+
+--- available chains
+	- PREROUTING
+	- INPUT
+	- OUTPUT
+	- FORWARD
+	- POSTROUTING
+	- user defined
+
+--- some available targets
+	- ACCEPT
+	- DROP
+	- REJECT
+	- DNAT (destination ip rewrite)
+	- SNAT (source ip rewrite)
+	- LOG
+	- MARK
+	- MASQUERADE (dynamic SNAT)
+	- REDIRECT
+	- RETURN
+
+--- available states
+	- NEW
+	- ESTABLISHED
+	- RELATED
+	- INVALID
+	- UNTRACKED
+
+
