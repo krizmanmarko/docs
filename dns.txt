@@ -1,3 +1,6 @@
+https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml
+
+
 Ingress filtering - external traffic reaching internal
 RRset - set of all TYPE (A, AAAA, ...) records on this ns
 RPZ - response policy zone
@@ -128,8 +131,8 @@ triggers:
 	NSIP
 
 possible actions:
-	NXDOMAIN
-	NODATA
+	NXDOMAIN (no record for this name does not exist)
+	NODATA (record for this name exists, but the type is different)
 	PASSTHRU
 	DROP
 	TCP-Only

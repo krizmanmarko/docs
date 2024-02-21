@@ -1,0 +1,33 @@
+awk -F ','
+
+
+RS -> record separator ('\n')
+FS -> field seperator
+OFS -> output field seperator (' ')
+ORS -> output record separator
+NF -> number of fields
+NR -> current number of field?
+FNR
+ARGC, ARGV
+ENVIRON[PATH]
+
+
+record - line
+field - column
+
+
+pattern {action} -> if pattern is matched do an action
+pattern -> BEGIN | END | expression
+action -> built-in functions
+
+example
+=======
+
+awk '
+BEGIN { print "starting analysis"; id = "some_regex" }
+# just a comment
+/regex/ { ++n }
+$0 ~ /regex/ { "success" }
+$0 !~ /regex/ { "fail" }
+$0 % "^" id		# matches every ^some_regex
+END { print "found", n, "occurences" }'

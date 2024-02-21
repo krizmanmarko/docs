@@ -7,3 +7,6 @@ arch/riscv/include/asm/page.h: unmodified: line 30 of 191 [15%]
  * When not using MMU this corresponds to the first free page in
  * physical memory (aligned on a page boundary).
  */
+
+--- clear up cache (/proc/sys/vm/drop_caches)
+free && sync && echo 3 > /proc/sys/vm/drop_caches && free

@@ -45,6 +45,13 @@ fg %% -> run job %%
 '%1 &' 'bg %1' -> run job %1 in background
 
 --- Extras ---
+
+ctrl -> C-
+alt -> M-
+print autocomplete options: M-?
+
+bash -x (improves debugability)
+
 bash setuid (bash -p)
 
 ctrl-s - ctrl-q

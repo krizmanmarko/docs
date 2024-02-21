@@ -1,0 +1,48 @@
+use strict;
+use warnings;
+use v5.35;
+
+# comment
+
+# you can ommit () on function calls
+print("Hello, world\n");
+print "Hello, world\n";
+
+$global_var = 'sth';
+my $local_var = 'sth';
+
+my $var = "this ", 2*3, " is six";
+
+my @myarray = ("a", "b");
+print $myarray[$#myarray];	# prints last element of myarray
+print @myarray[0,1];		# print first and second
+print @myarray[0..1];		# print from first to second
+sort @myarray
+reverse @myarray
+
+my %hashmap = ("apple", "green", "banana", "yellow");
+# is equal to
+my %hashmap = (
+	apple => "green",
+	banana => "yellow",
+);
+$hashmap{"apple"};
+keys %hashmap
+values %hashmap
+%ENV
+
+--- operators
+.   string concatenation
+x   string multiplication (repeats strings)
+..  range operator (creates a list of numbers or strings)
+
+if (/foo/) {...}	# true if $_ contains foo
+if ($a =~ /foo/) {...}	# true if $a contains foo
+$a =~ s/foo/bar/;
+
+foreach my $key (keys %hash) {
+	print "The value of $key is $hash{$key}\n";
+}
+
+my $file  = <$in>;
+my @lines = <$in>;
