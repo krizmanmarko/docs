@@ -45,7 +45,6 @@ fg %% -> run job %%
 '%1 &' 'bg %1' -> run job %1 in background
 
 --- Extras ---
-<<<<<<< Updated upstream
 
 ctrl -> C-
 alt -> M-
@@ -54,8 +53,6 @@ print autocomplete options: M-?
 bash -x (improves debugability)
 
 bash setuid (bash -p)
-=======
->>>>>>> Stashed changes
 
 -- [fd]<>file (open file with fd fd)
 https://tldp.org/LDP/abs/html/io-redirection.html
