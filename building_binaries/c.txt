@@ -11,3 +11,40 @@ https://gcc.gnu.org/onlinedocs/gcc/Constraints.html#Constraints
 asm ("fsinx %[angle],%[output]"
 	: [output] "=f" (result)
 	: [angle] "f" (angle));
+
+
+// this is checked at compile time
+_Static_assert(cond, "fail message");
+
+// const, volatile, restrict
+https://www.gnu.org/software/c-intro-and-ref/manual/html_node/Type-Qualifiers.html
+Using const char * for the parameter is a way of saying this function
+never modifies the memory of the string itself.
+volatile disables optimisation
+restrict tells the compiler that this memory is only accessed via this pointer
+	(therefore this cannot be pointer to static or automatic variables)
+	i think...
+
+// volatile
+Volatile is a qualifier that is applied to a variable when it is
+declared. It tells the compiler that the value of the variable may change
+at any time-without any action being taken by the code the compiler
+finds nearby. The implications of this are quite serious. However,
+before we examine them, let’s take a look at the syntax.
+https://www.embedded.com/introduction-to-the-volatile-keyword/
+
+// cv-qualifiers (const, volatile)
+int *p; 	// p is a pointer to int
+int *p(int);	// p is a function returning pointer to int
+int *const p;	// p is a constant pointer to int
+int const *p;	// p is a pointer to constant int
+http://www.dansaks.com/articles/2000-02%20Top-Level%20cv-Qualifiers%20in%20Function%20Parameters.pdf
+
+
+useful info about variables
+https://www.gnu.org/software/c-intro-and-ref/manual/html_node/Variables.html
+
+// forcing a variable to be on stack (and not in register)
+
+volatile int stack_var;
+*(&stack_var) = init_val;

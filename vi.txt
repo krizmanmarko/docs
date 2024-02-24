@@ -44,6 +44,9 @@ if sequence == '#[0-9]' -> this maps to F1-F9
 map! sequence better_sequence <- this applies to insert mode
 map! ^T ^Vb/b/b/b/ <- map tab to 4 spaces
 
+execute buffer on lines 5-10 (https://stackoverflow.com/questions/390174/in-vim-how-do-i-apply-a-macro-to-a-set-of-lines/390194#390194)
+:5,10norm! @a
+
 
 
 Abbreviations

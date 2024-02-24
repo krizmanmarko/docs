@@ -45,6 +45,7 @@ fg %% -> run job %%
 '%1 &' 'bg %1' -> run job %1 in background
 
 --- Extras ---
+<<<<<<< Updated upstream
 
 ctrl -> C-
 alt -> M-
@@ -53,9 +54,40 @@ print autocomplete options: M-?
 bash -x (improves debugability)
 
 bash setuid (bash -p)
+=======
+>>>>>>> Stashed changes
 
-ctrl-s - ctrl-q
+-- [fd]<>file (open file with fd fd)
+https://tldp.org/LDP/abs/html/io-redirection.html
+
+echo 123456789 >myfile
+exec 3<>myfile	# open("myfile", O_RDWR) -> returns 3
+read -n 4 <&3
+echo -n . >&3
+exec 3>&-	# close(3)
+cat myfile	# 1234.6789
+
+[fd]>&-		# close(input fd)
+[fd]<&-		# close(output fd)
 
 close stdin: 0<&-
+close stdout: 1>&-
+
+command1 |& command2 is equivalent to command1 2>&1 | command2
+
+here document
+cat << "EOF"
+hahaha
+EOF
+
+here string
+cat <<< "this is direct input to program"
+
+https://askubuntu.com/questions/678915/whats-the-difference-between-and-in-bash
+-- end io redirection
+
+bash setuid (bash -p)
+
+ctrl-s - ctrl-q
 
 cut off extension: ${file%.txt}

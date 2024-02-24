@@ -1,0 +1,28 @@
+trusted execution environment
+=============================
+
+https://downloads.scademy.com/material/f6bedfb0630504b1d1f47ebec3d2026d84624440/participant_notes.pdf
+attestation (making sure signture is correct)
+
+Root of trust
+secure boot
+secure storage
+isolated execution
+remote attestation
+secure provisioning (sharing data)
+trusted path (communication between TEE and devices)
+
+
+--- Arm TrustZone
+
+REE
+EL3 (firmware)
+EL2 (vmm)
+EL1 (os)
+EL0 (apps)
+
+TEE
+EL3 (firmware)
+EL2 (secure partition manager)
+EL1 (trusted os - very small)
+EL0 (trusted services)
