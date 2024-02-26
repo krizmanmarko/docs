@@ -8,5 +8,42 @@ arch/riscv/include/asm/page.h: unmodified: line 30 of 191 [15%]
  * physical memory (aligned on a page boundary).
  */
 
+A device is simply any data structure that contains an embedded `struct device`,
+no more and no less.
+
 --- clear up cache (/proc/sys/vm/drop_caches)
 free && sync && echo 3 > /proc/sys/vm/drop_caches && free
+
+
+--- sysfs
+-- /sys/devices
+https://lwn.net/Articles/646617/
+-- class, bus description
+https://lwn.net/Articles/645810/
+
+/sys/dev
+	int fd = open("/dev/sda1");
+	fstat(fd,...); // returns which type [block, char] and major, minor nums
+
+/sys/class, /sys/bus, /sys/block -> at some point should become /sys/subsystem
+	links to directories /sys/devices, exported via different hierarchy
+/sys/block: links for disks and partitions
+
+/sys/devices -> all device directory links lead here
+	actually shows how the device is physically connected to the system
+/sys/devices/virtual
+	When there is no physical device, or it is not currently represented
+	on any sort of bus, devices are organized into /sys/devices/virtual
+
+device properties (can be viewed in device directory)
+https://docs.kernel.org/admin-guide/sysfs-rules.html
+	- devpath (/devices/...)
+	- kernel name: last element in devpath (sda, tty, 0000:00:1f.2, ...)
+	- subsystem: subsystem link last element (block, tty, pci, ...)
+	- driver: driver link last element (usb)
+	- attributes: other files in device directory
+
+	each device directory has a link to subsystem [class/..., bus/...]
+	uevent contains type of device
+
+devfs
