@@ -44,6 +44,16 @@ Return codes
 4 = NOTIMPL, not implemented
 5 = REFUSED (e.g., refused zone transfer requests)
 
+Bits
+====
+AA - authoritative answer
+	server is authoritative for domain if it contains its A or AAAA record
+TC - truncated response
+RD - recursion desired
+RA - recursion available
+AD - authentic data
+CD - checking disabled
+DO - DNSSEC answer OK
 
 DNSSEC
 ======
@@ -136,3 +146,20 @@ possible actions:
 	PASSTHRU
 	DROP
 	TCP-Only
+
+
+check TOR via dns
+=================
+
+-- actually find out if tor node with dns query
+https://piraces.dev/short-bits/check-if-an-ip-comes-from-tor-is-browsing-with-to
+r/
+
+-- get the full list
+https://check.torproject.org/torbulkexitlist
+https://www.dan.me.uk/torlist/?exit
+
+dig <ip-in-reverse>.dnsel.torproject.org.
+ip in reverse for 192.168.1.2 = 2.1.168.192
+in ce return 127.0.0.X (X != 1) je tor
+

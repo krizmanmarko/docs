@@ -6,3 +6,11 @@ setuid bit
 chmod u+s /bin/su
 chmod g+s /bin/su
 chmod 4777 /bin/su
+
+PATH="../../../../tmp/:$PATH"
+
+
+
+-- user/group creation
+
+usermod -aG group user
