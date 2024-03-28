@@ -33,6 +33,8 @@ Automatic variables (check out source [1]):
 
 $(info this string is echoed without info)
 
+WARNING: whitespace here matters
+$(foreach VARNAME,LIST, what_to_do) # is probably not what you wanted
 $(foreach VARNAME,LIST,what_to_do)
 $(foreach VARNAME,$(INCDIRS),-I$(VARNAME))
 
@@ -45,3 +47,6 @@ OBJECTS=$(patsubst %.c,%.o,$(CFILES))
 
 sources:
 [1] https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
+
+Extras
+eval function can generate make syntax to be parsed

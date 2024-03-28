@@ -1,0 +1,80 @@
+https://book.rada.re
+
+eco <colorscheme> -> change color
+
+info functions -> afl
+disass win -> pdf @ sym.win
+info registers -> dr, drr
+run -> do
+vmmap -> dm, om
+record -> dts+ (there is something else for gdb remote protocol)
+record stop -> dts-
+
+print local variables values
+afvd
+
+special radare variables
+$r -> num of terminal rows
+pd $r @rsp
+
+~.. -> pipe to less
+? -> evaluate expression
+
+--- visual mode
+
+. -> goto rip
+F2 -> set breakpoint
+F4 -> step to cursor
+F7,s -> si
+F8,S -> ni
+F9,c -> c
+
+df -> define function here
+A -> enter visual assembler (just input an instruction)
+
+
+
+
+
+
+-- print in different base
+> ? 0x149a
+5274 0x149a 012232 10011010 0.000000
+
+-- patching binary
+oo+ -> to get write access to binary
+s <address>
+wx 9090909090 -> writes 5 nops (cancelling call alarm())
+
+
+-- jump pages
+b 4096
+s++, s--
+
+-- print calling convention
+afci
+
+
+axt -> xreferences
+
+
+r2 scripting:
+
+axt 0x403e~[1] <-- prints word at index 1 of axt output, ~ is r2's internal grep
+eax!32 <-- size is 32
+
+
+ESIL
+aeaf -> print all used registers in this function
+
+aei -> initialize esil
+aeip -> initialize rip
+aer -> print regs
+aer eax=0x1234 -> set reg eax
+"aecue eax,0x1234,>" <- this is some esil language
+
+
+CREATING PAYLOAD
+wopD 100 @location <- generates cyclic
+wopO 0x41614141 -> 76
+??? https://monosource.gitbooks.io/radare2-explorations/content/tut4/tut4_-_exploit.html
