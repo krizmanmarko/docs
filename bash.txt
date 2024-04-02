@@ -88,3 +88,7 @@ bash setuid (bash -p)
 ctrl-s - ctrl-q
 
 cut off extension: ${file%.txt}
+
+disable alias temporarily:
+	alias cp="cp -i"
+	\cp
