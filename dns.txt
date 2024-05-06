@@ -163,3 +163,16 @@ dig <ip-in-reverse>.dnsel.torproject.org.
 ip in reverse for 192.168.1.2 = 2.1.168.192
 in ce return 127.0.0.X (X != 1) je tor
 
+
+What is Authority?
+==================
+
+Any DNS server that contains a complete copy of the domain's zone file
+is considered to be authoritative for that domain only. A complete copy
+of a zone file must have:
+
+- A valid Start of Authority (SOA) record
+- Valid Name Server (NS) records for the domain
+- The listed NS records should match the servers listed in the SOA
+  record. Servers listed in the zone file, but not in the SOA record
+  are called lame servers.
