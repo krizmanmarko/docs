@@ -27,6 +27,12 @@ AAAA: domain name -> IPv6
 PTR: IPv4 -> domain name
 AXFR: transfer whole zone file (privileged only)
 
+	axfr
+	notify:
+		- server notifies slave
+		- slave queries SOA to check serial number
+		- slave does axfr / ixfr
+
 dnssec specific
 DNSKEY: public dnssec key (public ZSK or KSK)
 RRSIG: signature of RRset signed with private ZSK

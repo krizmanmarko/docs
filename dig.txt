@@ -1,6 +1,8 @@
 dig @name-server name type
 dig -x IP
 
+dig type28 register.si
+
 @name-server: name server address
 type: ANY, A, AAAA, ...
 name: domain name to be looked up
