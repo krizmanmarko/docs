@@ -4,6 +4,9 @@ https://www.frozentux.net/iptables-tutorial/images/tables_traverse.jpg
 
 iptables [-t table] command [match] [target/jump]
 
+SNAT: iptables -t nat -A POSTROUTING -s 172.16.0.0/16 ! -o br0 -j MASQUERADE
+DNAT: iptables -t nat -A PREROUTING -p tcp -d 192.168.122.94 --dport 8888 -j DNAT --to-destination 172.16.0.100
+
 ============================
 Traversing chains and tables
 ============================

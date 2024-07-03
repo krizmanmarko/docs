@@ -5,3 +5,7 @@ single IP multiple machines
 
 machines are assigned static ip
 now routers see all of these machines as the same thing
+
+
+ip link help
+https://developers.redhat.com/blog/2018/10/22/introduction-to-linux-interfaces-for-virtual-networking

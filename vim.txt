@@ -18,3 +18,8 @@
 :...^f -> goto q: mode
 q:
 q/
+
+
+-- show whitespace
+:syntax on
+:set syntax=whitespace

@@ -13,4 +13,5 @@ PATH="../../../../tmp/:$PATH"
 
 -- user/group creation
 
-usermod -aG group user
+useradd <user>
+usermod -aG <group> <user>
