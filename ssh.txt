@@ -1,0 +1,3 @@
+forward a port from lisica (53) to parga (2753) over localhosts port (1553)
+ssh -L 1553:153.5.81.15:53 lisica
+ssh -R 53:localhost:1553 parga

@@ -27,6 +27,12 @@ AAAA: domain name -> IPv6
 PTR: IPv4 -> domain name
 AXFR: transfer whole zone file (privileged only)
 
+	axfr
+	notify:
+		- server notifies slave
+		- slave queries SOA to check serial number
+		- slave does axfr / ixfr
+
 dnssec specific
 DNSKEY: public dnssec key (public ZSK or KSK)
 RRSIG: signature of RRset signed with private ZSK
@@ -148,6 +154,7 @@ possible actions:
 	TCP-Only
 
 
+
 check TOR via dns
 =================
 
@@ -163,3 +170,23 @@ dig <ip-in-reverse>.dnsel.torproject.org.
 ip in reverse for 192.168.1.2 = 2.1.168.192
 in ce return 127.0.0.X (X != 1) je tor
 
+check software version via dns
+==============================
+dig ch txt version.bind
+
+DDR
+===
+dig -4 @1.1.1.1 svcb _dns.resolver.arpa
+
+What is Authority?
+==================
+
+Any DNS server that contains a complete copy of the domain's zone file
+is considered to be authoritative for that domain only. A complete copy
+of a zone file must have:
+
+- A valid Start of Authority (SOA) record
+- Valid Name Server (NS) records for the domain
+- The listed NS records should match the servers listed in the SOA
+  record. Servers listed in the zone file, but not in the SOA record
+  are called lame servers.

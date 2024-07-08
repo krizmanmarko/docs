@@ -13,5 +13,5 @@ PATH="../../../../tmp/:$PATH"
 
 -- user/group creation
 
-useradd -s /bin/bash -m marko
-usermod -aG group user
+useradd -s /bin/bash -m <user>
+usermod -aG <group> <user>

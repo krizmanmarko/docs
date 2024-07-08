@@ -95,3 +95,21 @@ Stop terminal output -> C-s
 Start terminal output -> C-q
 
 cut off extension: ${file%.txt}
+
+disable alias temporarily:
+	alias cp="cp -i"
+	\cp
+
+```from man bash: check out PARAMETER EXPANSION section
+       ${#parameter}
+              Parameter length. ...
+
+       ${parameter#word}
+       ${parameter##word}
+              Remove matching prefix pattern. ...
+
+       ${parameter%word}
+       ${parameter%%word}
+              Remove  matching suffix pattern. ...
+
+```

@@ -1,0 +1,15 @@
+obtain a certificate
+openssl s_client -connect 1.1.1.1:443
+
+read a certificate (.pem)
+openssl x509 -in <*.pem> -text
+
+
+CN: CommonName
+OU: OrganizationalUnit
+O: Organization
+L: Locality
+S: StateOrProvinceName
+C: CountryName
+
+

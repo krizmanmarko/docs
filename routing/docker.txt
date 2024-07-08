@@ -1,0 +1,58 @@
+-- https://labs.iximiuz.com/tutorials/container-networking-from-scratch
+
+ip netns add netns0
+nsenter --net=/run/netns/netns0 bash	<- gets you into the virtualized env
+ip link set lo up
+
+ip link add veth0 type veth peer name ceth0
+ip link set ceth0 netns netns0
+... configure both interfaces ...
+ip link set veth0 up, ip addr add x.x.x.x/24 dev ...
+
+
+if you want connectivity to gnu.org -> setup snat on host
+
+
+#### example
+- 2 containers connected via veth over host bridge (so they can be in the same network)
+
+# container 0
+ip netns add netns0
+nsenter --net=/run/netns/netns0 ip link set lo up
+ip link add veth0 type veth peer name ceth0 netns netns0
+ip link set veth0 up
+nsenter --net=/run/netns/netns0 ip link set ceth0 up
+nsenter --net=/run/netns/netns0 ip addr add 172.16.0.100/16 dev ceth0
+
+# container 1
+ip netns add netns1
+nsenter --net=/run/netns/netns1 ip link set lo up
+ip link add veth1 type veth peer name ceth1 netns netns1
+ip link set veth1 up
+nsenter --net=/run/netns/netns1 ip link set ceth1 up
+nsenter --net=/run/netns/netns1 ip addr add 172.16.0.101/16 dev ceth1
+
+# host
+ip link add br0 type bridge
+ip link set br0 up
+ip link set veth0 master br0
+ip link set veth1 master br0
+## this is not necessary for L2 connectivity (ip neigh)
+
+# to get connectivity to host
+ip addr add 172.16.0.1/16 dev br0	# also adds routes for container network on host
+nsenter --net=/run/netns/netns1 ip route add default via 172.16.0.1
+nsenter --net=/run/netns/netns1 ip route add default via 172.16.0.1
+
+# give internet access to containers (snat)
+echo 1 >/proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -s 172.16.0.0/16 ! -o br0 -j MASQUERADE
+
+# PUBLISH PORT
+# handle outside connections
+iptables -t nat -A PREROUTING -p tcp -d 192.168.122.94 --dport 8888 -j DNAT --to-destination 172.16.0.100
+# handle connections from localhost
+iptables -t nat -A OUTPUT -p tcp -d 192.168.122.94 --dport 8888 -j DNAT --to-destination 172.16.0.100
+
+# add resolv.conf (if using 127.0.0.53 systemd - localhost is different)
+/etc/netns/netns0/resolv.conf
