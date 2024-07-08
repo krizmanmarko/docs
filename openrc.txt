@@ -1,0 +1,19 @@
+to create new service add file /etc/init.d/myservice with contents:
+----------------------------------------------------------------------
+#!/sbin/openrc-run
+
+description="wg-quick"
+
+depend() {
+    need net
+    need localmount
+}
+
+start() {
+    wg-quick up wg0
+}
+
+stop() {
+    wg-quick down wg0
+}
+----------------------------------------------------------------------

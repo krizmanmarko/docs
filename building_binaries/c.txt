@@ -1,7 +1,17 @@
+--- header files
+should only contain declarations (when you include .h file no extra memory is allocated)
+
+--- basic C
+
 struct a a = {
 	[0] = "hello",
 	.b = 0
 };
+
+char buf[64][64];
+for (y)
+	for (x)
+		buf[y][x];
 
 --- asm
 

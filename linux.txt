@@ -47,3 +47,8 @@ https://docs.kernel.org/admin-guide/sysfs-rules.html
 	uevent contains type of device
 
 devfs
+
+
+core files
+ulimit -c unlimited
+echo "./core" >/proc/sys/kernel/core_pattern

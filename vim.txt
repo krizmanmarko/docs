@@ -1,3 +1,33 @@
+https://linuxhandbook.com/vim-buffers/
+
+netrw
+=====
+
+:Ex
+:Sexplore
+:Sex!
+:Hex
+...
+
+What I always do: grep -Rl $search and start opening files one by one in vim
+:Ex **//$search
+
+*/filepath   files in current directory which satisfy filepath
+**/filepath  files in current directory or below which satisfy the
+            file pattern
+*//pattern  files in the current directory which contain the
+            pattern (vimgrep is used)
+**//pattern files in the current directory or below which contain
+            the pattern (vimgrep is used)
+
+Enter: Opens a directory or a file.
+-: Go up to the parent directory.
+u: Go back to the previous directory in the history.
+gb: Jump to the most recent directory saved on the "Bookmarks". To create a bookmark we use mb.
+
+usual vim
+=========
+
 ^O -> represents CTRL-O
 :help vi_diff
 

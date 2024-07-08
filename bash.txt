@@ -48,7 +48,13 @@ fg %% -> run job %%
 
 ctrl -> C-
 alt -> M-
-print autocomplete options: M-?
+for vi mode keybindings check man readline.3
+vi-mode (in normal mode):
+= -> print all possible completions (but tab is better...)
+* -> print all possible completions as args
+
+^pattern^replace^ <- basically runs sed on previous command and launches that
+!# <- prints entire line typed so far
 
 bash -x (improves debugability)
 
@@ -85,6 +91,7 @@ https://askubuntu.com/questions/678915/whats-the-difference-between-and-in-bash
 
 bash setuid (bash -p)
 
-ctrl-s - ctrl-q
+Stop terminal output -> C-s
+Start terminal output -> C-q
 
 cut off extension: ${file%.txt}

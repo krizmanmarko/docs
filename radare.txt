@@ -1,6 +1,6 @@
-https://book.rada.re
-
 eco <colorscheme> -> change color
+
+e asm.describe=true <- get opcode description
 
 info functions -> afl
 disass win -> pdf @ sym.win
@@ -35,6 +35,7 @@ A -> enter visual assembler (just input an instruction)
 
 
 
+on file.bin 0x1000 <- map file.bin to 0x1000
 
 
 -- print in different base
@@ -61,20 +62,75 @@ axt -> xreferences
 r2 scripting:
 
 axt 0x403e~[1] <-- prints word at index 1 of axt output, ~ is r2's internal grep
+dm~libc:0[1] <-- prints first line, second word
+dm~libc:0[5-6] <-- cut -f6,7
+dm~libc:0[5-] <-- cut -f6,7,...
 eax!32 <-- size is 32
+
+.cmd <- execute output of command as r2 script
+
+calling malloc(40) for example:
+	1. store register state
+		store  : dr. >$snapshot
+	2. rip = [reloc.malloc]
+	3. rdi = size
+	4. execute call (dcr)
+	5. restore register state
+		restore: .$snapshot
+
+store / restore register state
+store  : dr. >$snapshot
+restore: .$snapshot
+
+heap
+dmhf; dmhb 1; dmh <- in visual cmd.prompt (|)
+
+inspect heap in visual mode
+r2 -e cmd.cprompt='pxq $r*0x10 @`dm~heap[0]` + 0x280' -d `pidof a.out`
+
+
 
 
 ESIL
 aeaf -> print all used registers in this function
 
+e asm.emu=true
+
 aei -> initialize esil
-aeip -> initialize rip
+aeim -> initialize esil stack
+aeip -> initialize esil rip
 aer -> print regs
 aer eax=0x1234 -> set reg eax
 "aecue eax,0x1234,>" <- this is some esil language
+
+emu.write = true <- enables memory writes by esil
+reverse esil debugging
+	aets
+	aets+
+	aesb
+
+e asm.emu=false
 
 
 CREATING PAYLOAD
 wopD 100 @location <- generates cyclic
 wopO 0x41614141 -> 76
 ??? https://monosource.gitbooks.io/radare2-explorations/content/tut4/tut4_-_exploit.html
+
+load .h files
+https://bananamafia.dev/post/uaf-1/
+
+list source
+CL @ sym.main
+
+-----------------------
+forensics
+---------------------------
+/m -> basically binwalk
+
+instruction info
+ao -> show instruction data (cycles, size ...)
+
+-- show opcode description
+rasm2 -w
+asm.describe
