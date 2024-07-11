@@ -1,0 +1,10 @@
+Layer 2 (only goes one hop away from NIC)
+
+Who has this IP?
+
+if the device has that IP it returns its MAC address
+if the IP is not within this network, the gateway will notice that and check it's routing tables
+	if there is a match it returns its MAC address
+
+
+https://community.cisco.com/t5/security-knowledge-base/layer-2-vs-layer-3-addressing/ta-p/3123440

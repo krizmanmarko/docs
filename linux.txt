@@ -57,14 +57,15 @@ https://docs.kernel.org/admin-guide/sysfs-rules.html
 	each device directory has a link to subsystem [class/..., bus/...]
 	uevent contains type of device
 
-devfs
+--- devfs
 
 core files
 ulimit -c unlimited
 echo "./core" >/proc/sys/kernel/core_pattern
 
 
-procfs
+--- procfs (check out Documentation/filesystem/proc.rst in linux source)
+
 every single file (even links, sockets...) have an inode number (unique integer), use ls -i (possibly -L to dereference links)
 /proc/pid/fd -> also contains sockets (with inode number that is used in /proc/net/tcp)
 finding process behind open port using /proc (https://unix.stackexchange.com/questions/226276/read-proc-to-know-if-a-process-has-opened-a-port)
