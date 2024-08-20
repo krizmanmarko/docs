@@ -13,3 +13,8 @@ S: StateOrProvinceName
 C: CountryName
 
 
+create csr
+openssl req -new -keyout nadrt.key -out nadrt.csr -config ./openssl.cnf -nodes
+
+# -nodes (no DES) -> disable password on certificate
+# -config -> https://medium.com/@rinfinite/openssl-csr-with-alternative-names-d6a9a8355381

@@ -190,3 +190,12 @@ of a zone file must have:
 - The listed NS records should match the servers listed in the SOA
   record. Servers listed in the zone file, but not in the SOA record
   are called lame servers.
+
+
+query is identified by
+	query id (16 bit)
+	case sensitivity (0x20 encoding)
+	src_port
+
+imagine sending a query and after that sending responses (faking the answer from authoritative server that recursor asked) and you poisoned cache
+

@@ -113,3 +113,7 @@ disable alias temporarily:
               Remove  matching suffix pattern. ...
 
 ```
+
+disable colors
+unset LS_COLORS
+export TERM=vt220
