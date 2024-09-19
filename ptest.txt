@@ -1,0 +1,16 @@
+in burp define scope
+nmap -sC -sV -vv
+
+quick overlook ip rangea
+	sn0int
+	shodan.io - net:153.5.81.0/24
+
+scan ip
+	https://web-check.xyz
+
+scan web app
+	nuclei
+
+
+executes alert(1) via base64
+eval(atob('YWxlcnQoMSk='))
