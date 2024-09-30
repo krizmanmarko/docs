@@ -18,3 +18,9 @@ openssl req -new -keyout nadrt.key -out nadrt.csr -config ./openssl.cnf -nodes
 
 # -nodes (no DES) -> disable password on certificate
 # -config -> https://medium.com/@rinfinite/openssl-csr-with-alternative-names-d6a9a8355381
+
+
+
+# rsa keys - get public key from private
+
+ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/id_rsa.pub
