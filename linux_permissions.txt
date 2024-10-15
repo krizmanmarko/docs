@@ -15,3 +15,18 @@ PATH="../../../../tmp/:$PATH"
 
 useradd -s /bin/bash -m <user>
 usermod -aG <group> <user>
+
+
+--- capabilities
+
+getcap, setcap -> can set capabilities for binary
+prctl -> can also set capabilities for process
+
+
+cat /proc/self/status | grep Cap
+capsh --decode=000001ffffffffff
+
+getpcaps <pid>
+
+setcap cap_net_raw,cap_net_admin=eip /path/to/binary
+getcap /path/to/binary

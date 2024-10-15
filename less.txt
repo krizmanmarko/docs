@@ -1,0 +1,2 @@
+&pattern -> only display lines that match
+&<ctrl-n> -> reverse &pattern
