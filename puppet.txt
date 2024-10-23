@@ -1,0 +1,3 @@
+run puppet locally
+
+puppet apply --modulepath="$(puppet config print modulepath):/path/to/modules -e "include openscap_hardening" --debug
